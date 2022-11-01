@@ -11,6 +11,7 @@ function auth(req, res, next) {
         }
         if(error){
             res.status(401).send('You must Log in first !!!');
+            return;
         }
         next();
     })
