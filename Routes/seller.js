@@ -69,7 +69,7 @@ router.delete('/', auth, sellerRole, async (req, res) => {
 router.get('/', auth, sellerRole, async(req, res, next) => {
     try{
         const userId = req.userId;
-        const Seller = await getSellers(userId);
+        const Seller = await getSellerById(userId);
         res.json(Seller);
     }catch(error){
         res.status(500).send(error.message);
