@@ -78,16 +78,24 @@ router.delete('/:id', auth, sellerRole, async (req, res) => {
 
 router.get('/', auth, async (req, res) => {
     try {
-        const sellerName = req.query.name;
-        console.log(sellerName);
-        let seller;
-        let SellerId;
-        if(sellerName!=null){
-            seller = await getSellerByName(sellerName);
-            SellerId = seller.id;
+        const seller = await sellerModel.findById(req.userId);
+        console.log(seller);
+        if (seller != null) {
+            let SellerId = req.userId;
+            const Product = await getProduct(SellerId);
+            res.json(Product);
+        }else {
+            const sellerName = req.query.name;
+            console.log(sellerName);
+            let seller;
+            let SellerId;
+            if(sellerName!=null){
+                seller = await getSellerByName(sellerName);
+                SellerId = seller.id;
+            }
+            const Product = await getProduct(SellerId);
+            res.json(Product);
         }
-        const Product = await getProduct(SellerId);
-        res.json(Product);
     } catch (err) {
         res.status(500).send(err.message);
     }
